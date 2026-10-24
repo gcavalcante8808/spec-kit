@@ -149,6 +149,12 @@ def test_installed_names_invocations_and_rendered_references_stay_aligned(
             "/speckit.plan",
             ("Start DSH", "dsh web", ".dsh/skills"),
         ),
+        (
+            "sidecar",
+            "@speckit-plan",
+            "/speckit-plan",
+            ("Start Sidecar", ".sidecar/skills"),
+        ),
     ],
 )
 def test_init_completion_guidance_matches_installed_integration(

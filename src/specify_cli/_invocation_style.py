@@ -47,6 +47,9 @@ CONDITIONAL_SLASH_AGENTS: frozenset[str] = frozenset(
 # Agents that render /skill:<name> (skill-colon invocation) when in skills mode.
 SKILL_COLON_AGENTS: frozenset[str] = frozenset({"kimi"})
 
+# Agents that render @speckit-<name> (at-mention invocation) when in skills mode.
+AT_SKILLS_AGENTS: frozenset[str] = frozenset({"sidecar"})
+
 
 def is_dollar_skills_agent(selected_ai: str | None, ai_skills_enabled: bool) -> bool:
     """Return ``True`` if *selected_ai* uses ``$speckit-<name>`` invocations.
@@ -63,7 +66,8 @@ def get_invocation_prefix(selected_ai: str | None, ai_skills_enabled: bool) -> s
     """Return the native invocation prefix for *selected_ai* in skills mode.
 
     Returns ``"$"`` for dollar-skills agents (Codex, ZCode),
-    ``"/skill:"`` for skill-colon agents (Kimi), and ``"/"`` for all others.
+    ``"/skill:"`` for skill-colon agents (Kimi), ``"@"`` for at-mention
+    agents (Sidecar), and ``"/"`` for all others.
     """
     if not isinstance(selected_ai, str):
         return "/"
@@ -71,7 +75,20 @@ def get_invocation_prefix(selected_ai: str | None, ai_skills_enabled: bool) -> s
         return "$"
     if selected_ai in SKILL_COLON_AGENTS and ai_skills_enabled:
         return "/skill:"
+    if selected_ai in AT_SKILLS_AGENTS and ai_skills_enabled:
+        return "@"
     return "/"
+
+
+def is_at_skills_agent(selected_ai: str | None, ai_skills_enabled: bool) -> bool:
+    """Return ``True`` if *selected_ai* uses ``@speckit-<name>`` invocations.
+
+    Agents in `AT_SKILLS_AGENTS` (e.g. ``sidecar``) invoke skills with an
+    at-mention because their slash commands are a fixed built-in set.
+    """
+    if not isinstance(selected_ai, str):
+        return False
+    return selected_ai in AT_SKILLS_AGENTS and ai_skills_enabled
 
 
 def is_slash_skills_agent(selected_ai: str | None, ai_skills_enabled: bool) -> bool:

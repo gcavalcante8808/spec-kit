@@ -1,5 +1,7 @@
 """Tests for SidecarIntegration."""
 
+import json
+
 import pytest
 from typer.testing import CliRunner
 
@@ -149,6 +151,36 @@ class TestSidecarSkillCompatibility:
         content = (skills_dir / "speckit-specify" / "SKILL.md").read_text(encoding="utf-8")
 
         assert "$ARGUMENTS" in content
+
+
+class TestSidecarAtMentionReferences:
+    """Generated text must point at ``@speckit-<name>``: ``/speckit-<name>``
+    is not a Sidecar slash command and would be rejected as unknown."""
+
+    def test_skill_bodies_reference_commands_by_at_mention(self, tmp_path):
+        integration = get_integration("sidecar")
+        integration.setup(tmp_path, IntegrationManifest("sidecar", tmp_path), script_type="sh")
+
+        content = (tmp_path / ".sidecar" / "skills" / "speckit-implement" / "SKILL.md").read_text(
+            encoding="utf-8"
+        )
+
+        assert "@speckit-tasks" in content
+        assert "/speckit-tasks" not in content
+
+    def test_hooks_render_at_mention_invocation(self, tmp_path):
+        from specify_cli.extensions import HookExecutor
+
+        init_options = tmp_path / ".specify" / "init-options.json"
+        init_options.parent.mkdir(parents=True)
+        init_options.write_text(json.dumps({"ai": "sidecar", "ai_skills": True}))
+
+        message = HookExecutor(tmp_path).format_hook_message(
+            "before_plan",
+            [{"extension": "test-ext", "command": "speckit.plan", "optional": False}],
+        )
+
+        assert "EXECUTE_COMMAND_INVOCATION: @speckit-plan" in message
 
 
 class TestSidecarMultiInstallSafe:
