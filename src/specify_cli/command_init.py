@@ -1095,6 +1095,7 @@ def register(app: typer.Typer) -> None:
         muse_skill_mode = selected_ai == "muse" and _is_skills_integration
         grok_skill_mode = selected_ai == "grok" and _is_skills_integration
         dsh_skill_mode = selected_ai == "dsh" and _is_skills_integration
+        sidecar_skill_mode = selected_ai == "sidecar" and _is_skills_integration
         bob_skill_mode = selected_ai == "bob" and _is_skills_integration
         native_skill_mode = (
             codex_skill_mode
@@ -1111,6 +1112,7 @@ def register(app: typer.Typer) -> None:
             or muse_skill_mode
             or grok_skill_mode
             or dsh_skill_mode
+            or sidecar_skill_mode
             or bob_skill_mode
         )
 
@@ -1157,6 +1159,11 @@ def register(app: typer.Typer) -> None:
         if dsh_skill_mode:
             steps_lines.append(
                 f"{step_num}. Start DSH ([cyan]dsh web[/cyan]) in this project directory; spec-kit skills were installed to [cyan].dsh/skills[/cyan]"
+            )
+            step_num += 1
+        if sidecar_skill_mode:
+            steps_lines.append(
+                f"{step_num}. Start Sidecar in this project directory; spec-kit skills were installed to [cyan].sidecar/skills[/cyan]"
             )
             step_num += 1
         if bob_skill_mode:

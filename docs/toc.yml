@@ -120,6 +120,8 @@
       href: integrations/rovodev.md
     - name: SHAI (OVHcloud)
       href: integrations/shai.md
+    - name: Sidecar
+      href: integrations/sidecar.md
     - name: Tabnine CLI
       href: integrations/tabnine.md
     - name: Trae
