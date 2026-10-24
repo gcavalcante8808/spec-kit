@@ -43,7 +43,11 @@ from .._download_security import (
 )
 from .._init_options import is_ai_skills_enabled
 from .._install_ignore import load_install_ignore
-from .._invocation_style import is_dollar_skills_agent, is_slash_skills_agent
+from .._invocation_style import (
+    is_at_skills_agent,
+    is_dollar_skills_agent,
+    is_slash_skills_agent,
+)
 from .._utils import dump_frontmatter, relative_extension_path_violation, version_satisfies
 from ..catalogs import CatalogEntry as BaseCatalogEntry
 from ..catalogs import CatalogStackBase
@@ -1576,6 +1580,10 @@ class ExtensionManager:
                 command_name = "speckit." + match.group(1).lower().replace("_", ".")
                 if is_dollar_skills_agent(selected_ai, ai_skills_enabled):
                     return "$" + command_name.replace("speckit.", "speckit-").replace(
+                        ".", "-"
+                    )
+                if is_at_skills_agent(selected_ai, ai_skills_enabled):
+                    return "@" + command_name.replace("speckit.", "speckit-").replace(
                         ".", "-"
                     )
                 if is_slash_skills_agent(selected_ai, ai_skills_enabled):
@@ -5614,6 +5622,7 @@ class HookExecutor:
         ai_skills_enabled = is_ai_skills_enabled(init_options)
 
         dollar_skill_mode = is_dollar_skills_agent(selected_ai, ai_skills_enabled)
+        at_skill_mode = is_at_skills_agent(selected_ai, ai_skills_enabled)
         kimi_skill_mode = selected_ai == "kimi"
         cline_mode = selected_ai == "cline"
         forge_mode = selected_ai == "forge"
@@ -5622,6 +5631,8 @@ class HookExecutor:
         skill_name = self._skill_name_from_command(command_id)
         if dollar_skill_mode and skill_name:
             return f"${skill_name}"
+        if at_skill_mode and skill_name:
+            return f"@{skill_name}"
         if kimi_skill_mode and skill_name:
             return f"/skill:{skill_name}"
         if cline_mode:

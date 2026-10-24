@@ -50,6 +50,7 @@ ISSUE_TEMPLATE_AGENT_KEYS = [
     "qwen",
     "rovodev",
     "shai",
+    "sidecar",
     "tabnine",
     "trae",
     "zcode",

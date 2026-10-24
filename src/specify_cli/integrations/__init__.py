@@ -104,6 +104,7 @@ def _register_builtins() -> None:
     from .qwen import QwenIntegration
     from .rovodev import RovodevIntegration
     from .shai import ShaiIntegration
+    from .sidecar import SidecarIntegration
     from .tabnine import TabnineIntegration
     from .trae import TraeIntegration
     from .vibe import VibeIntegration
@@ -149,6 +150,7 @@ def _register_builtins() -> None:
     _register(QwenIntegration())
     _register(RovodevIntegration())
     _register(ShaiIntegration())
+    _register(SidecarIntegration())
     _register(TabnineIntegration())
     _register(TraeIntegration())
     _register(VibeIntegration())

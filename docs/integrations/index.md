@@ -119,6 +119,7 @@ agent's chat window in your IDE. Each page links to the agent's installation doc
 | [Qwen Code](qwen.md) | `qwen` |
 | [RovoDev](rovodev.md) | `rovodev` |
 | [SHAI (OVHcloud)](shai.md) | `shai` |
+| [Sidecar](sidecar.md) | `sidecar` |
 | [Tabnine CLI](tabnine.md) | `tabnine` |
 | [Trae](trae.md) | `trae` |
 | [ZCode](zcode.md) | `zcode` |

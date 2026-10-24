@@ -358,6 +358,13 @@ class TestBuildCommandInvocation:
         assert get_invocation_prefix("codex", True) == "$"
         assert get_invocation_prefix("claude", True) == "/"
 
+    def test_get_invocation_prefix_at_mention(self):
+        """get_invocation_prefix returns '@' for Sidecar in skills mode only."""
+        from specify_cli._invocation_style import get_invocation_prefix
+
+        assert get_invocation_prefix("sidecar", True) == "@"
+        assert get_invocation_prefix("sidecar", False) == "/"
+
 class TestResolveCommandRefs:
     """Tests for __SPECKIT_COMMAND_<NAME>__ placeholder resolution."""
 
@@ -368,6 +375,7 @@ class TestResolveCommandRefs:
             ("PLAN", "-", "/", "/speckit-plan"),
             ("PLAN", "-", "$", "$speckit-plan"),
             ("PLAN", "-", "/skill:", "/skill:speckit-plan"),
+            ("PLAN", "-", "@", "@speckit-plan"),
             ("GIT_COMMIT", ".", "/", "/speckit.git.commit"),
             ("GIT_COMMIT", "-", "/", "/speckit-git-commit"),
             (
